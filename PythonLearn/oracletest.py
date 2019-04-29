@@ -35,7 +35,7 @@ def ExecuteSQL(sql):
 
 def PrintRs(rs):
     for x in rs:
-        print(x)
+        print(x[0])
 
 sql="select * from t_text"
 
