@@ -37,6 +37,20 @@ def ExecuteSQL(sql):
         return 0
 
 
+# 操作数据库带参数  1操作成功 0操作失败
+def ExecuteSQL(sql,param):
+    try:
+        db = cx_Oracle.connect(connStr)
+        # 创建连接
+        cr = db.cursor()
+        cr.execute(sql, param)  # 执行sql
+        cr.close()
+        db.commit()
+        return 1
+    except Exception as err:
+        return 0
+
+
 
 def PrintRs(rs):
     for x in rs:
