@@ -36,6 +36,21 @@ def ExecuteSQL(sql):
     except Exception as err:
         return 0
 
+#数据库的批量操作
+def ExecuteSQLBatchs(sqls):
+    db = cx_Oracle.connect(connStr)
+    try:
+        cr = db.cursor()
+        for strsql in sqls:
+            cr.execute(strsql)  # 执行sql
+        cr.close()
+        db.commit()
+        return 1
+    except Exception as e:
+        db.rollback()
+        return 0
+
+
 
 # 操作数据库带参数  1操作成功 0操作失败
 def ExecuteSQL(sql,param):

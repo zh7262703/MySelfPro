@@ -1,4 +1,7 @@
 import oracleTest
+import random
+import datetime
+import time
 
 def getMaxId():
    # 数据库查询操作获取最大的id
@@ -13,19 +16,43 @@ def getMaxId():
       max_id = int(x[0])+1
    return max_id
 
+
+
 #print(x[0])
 #print(max_id)
 
-#结束标记
-end_flag = 0
-T_name = "xxx"
-Val1 = "1"
-Val2 = "2"
-Val3 = "3"
-Val4 = "4"
+
+def SqlsBatchsTest(maxid):
+   #开始时间
+   start = time.process_time()
 
 
-while end_flag == 0:
+   # 批量操作
+   sqls = []
+   cindex = 0
+   sqls.append("delete from T_TEST")
+   while cindex < maxid:
+      cindex += 1
+      sqls.append("insert into T_TEST(id,TNAME,VAL1,VAL2,VAL3,VAL4)values("+
+                  str(cindex)+",'"+"Name"+str(random.randint(10,200))+"','"+
+                  "A"+str(random.randint(10,200))+"','"+
+                  "B"+str(random.randint(10,200))+"','"+
+                  "C"+str(random.randint(10,200))+"','"+
+                  "D"+str(random.randint(10,200))+"')")
+   t1 = oracleTest.ExecuteSQLBatchs(sqls)
+   end = time.process_time()
+
+   #计算程序执行时间
+   protime = end-start
+   if t1 == 0:
+      print("程序耗时："+str(protime)+"   执行结果：批量操作失败！")
+   else:
+      print("程序耗时："+str(protime)+"   执行结果：批量操作成功！")
+
+
+def SomeOperator():
+   end_flag = 0
+   while end_flag == 0:
 
       if input("请选择操作  A 添加数据 ,B 查询 ：") == "A":
          T_name = input("请输入T_NAME：")
@@ -58,5 +85,8 @@ while end_flag == 0:
          end_flag = 1
 
 
-
+#SomeOperator()
+records=1000000
+print("生成"+str(records)+"的数据")
+SqlsBatchsTest(records)
 print("欢迎再次使用本系统！")
